@@ -52,6 +52,9 @@ def main():
     while run:
         fpslock()
         drawbg()
+        
+        #draw Warrior
+        knight.draw()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
