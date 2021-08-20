@@ -1,5 +1,5 @@
 import pygame 
-
+import random 
 pygame.init()
 
 
@@ -26,13 +26,19 @@ def fpslock(fps):
     clock =pygame.time.Clock()
     fps = 60 
     clock.tick(fps)
+    
+#Attack for Warrior
+attack = random.randint(5, 20)
 
 #Warrior class
 class Warrior():
-    def __init__(self, x, y, name, max_hp, strength)
+    def __init__(self, x, y, name, max_hp, attack, potions)
     self.name = name 
     self.max_hp = max_hp 
     self.hp = max_hp
+    self.attack = attack
+    self.start_potions = potions
+    self.potions = potions 
     self.alive = True 
     self.image = pygame.image.load() #Load image of Warrior
     self.rect = self.image.get_rect()
@@ -42,7 +48,7 @@ class Warrior():
 def draw(self):
     screen.blit(self.image, self.rect)
     
-knight = Warrior(200,260, 'Warrior', 100)
+knight = Warrior(200,260, 'Warrior', 100, attack)
 
 
 #To Keep window up 
