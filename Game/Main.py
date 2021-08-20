@@ -3,10 +3,8 @@ import random
 pygame.init()
 
 
-
-
 #window
-screenwidth = 875
+screenwidth = 1475
 screenheight = 500
 
 screen = pygame.display.set_mode((screenwidth, screenheight))
@@ -19,13 +17,13 @@ bgimage= pygame.image.load("img/bg.png").convert_alpha()
 
 #Load images
 def drawbg():
-    screen.blit(bgimage, (0,0))
+    screen.blit(bgimage, (300,0))
 
 #prevent lag on slower computers
-def fpslock(fps):
-    clock =pygame.time.Clock()
-    fps = 60 
-    clock.tick(fps)
+def fpslock():
+    FPS = 60 # frames per second setting
+    fpsClock = pygame.time.Clock()
+    fpsClock.tick(FPS)
     
 #Attack for Warrior
 attack = random.randint(5, 20)
