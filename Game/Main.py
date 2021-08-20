@@ -27,6 +27,24 @@ def fpslock(fps):
     fps = 60 
     clock.tick(fps)
 
+#Warrior class
+class Warrior():
+    def __init__(self, x, y, name, max_hp, strength)
+    self.name = name 
+    self.max_hp = max_hp 
+    self.hp = max_hp
+    self.alive = True 
+    self.image = pygame.image.load() #Load image of Warrior
+    self.rect = self.image.get_rect()
+    self.rect.center = (x, y)
+    
+  
+def draw(self):
+    screen.blit(self.image, self.rect)
+    
+knight = Warrior(200,260, 'Warrior', 100)
+
+
 #To Keep window up 
 def main():
     
