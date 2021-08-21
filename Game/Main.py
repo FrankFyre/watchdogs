@@ -37,28 +37,41 @@ def fpslock():
 
 #Attack for Warrior
 attack = random.randint(5, 20)
+#Defence for Warrior
+defence = random.randint(1, 10)
+
+#Attack for Tanker
+attack2 = random.randint(1, 20)
+#Defence for Tanker 
+defence2 = random.randint(5, 15)
 
 #Warrior class
 class Warrior():
-    def __init__(self, x, y, img, name, max_hp, attack, potions):
+    def __init__(self, x, y, img, name, max_hp, attack, defence,  potions, exp):
         self.name = name 
         self.max_hp = max_hp 
         self.hp = max_hp
         self.attack = attack
+        self.defence = defence 
         self.start_potions = potions
         self.potions = potions 
         self.alive = True 
-        self.image = img 
+        self.image = img
+        self.exp = exp
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
+
     
   
     def draw(self):
         screen.blit(self.image, self.rect)
+       
 
+playerwar = Warrior(400,260,playerwarriorimg, 0,  100, attack, defence, 0, 0 )
+playertank = Warrior(1100, 260, playertankimg, 0, 100, attack, defence,  0, 0 )
+enemywar = Warrior( 0, 0, enemywarriorimg, 0, 100, attack2, defence2, 0, 0) 
+enemytank = Warrior(0, 0, enemytankimg, 0, 100, attack2, defence2, 0, 0)
 
-
-knight = Warrior(200,260,playertankimg, 0 , 10, 10, 10 )
 
 
 
@@ -71,7 +84,10 @@ def main():
         loadimages()
         
         #draw Warrior
-        knight.draw()
+        playerwar.draw()
+        
+        #draw Tanker
+        playertank.draw()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
