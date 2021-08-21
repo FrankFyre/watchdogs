@@ -1,3 +1,4 @@
+
 import pygame 
 import random 
 pygame.init()
@@ -8,17 +9,26 @@ screenwidth = 1475
 screenheight = 500
 
 screen = pygame.display.set_mode((screenwidth, screenheight))
-pygame.display.set_caption("Battle ")
+pygame.display.set_caption("Darren's Breakdown ")
 
 #store images
-#background image
+#background
 bgimage= pygame.image.load("img/bg.png").convert_alpha()
+sideimage= pygame.image.load("img/side2.png").convert_alpha()
 
+#Units
+
+#playertankimg = pygame.image.load("img/tanker1.png").convert_alpha()
+#playerwarriorimg = pygame.image.load("img/warrior1.png").convert_alpha()
+
+#enemytankimg = pygame.image.load("img/tanker2.png").convert_alpha()
+#enemywarriorimg = pygame.image.load("img/warrior2.png").convert_alpha()
 
 #Load images
-def drawbg():
+def loadimages():
     screen.blit(bgimage, (300,0))
-
+    screen.blit(sideimage, (0,0))
+    screen.blit(sideimage, (1175,0))
 #prevent lag on slower computers
 def fpslock():
     FPS = 60 # frames per second setting
@@ -30,17 +40,17 @@ attack = random.randint(5, 20)
 
 #Warrior class
 class Warrior():
-    def __init__(self, x, y, name, max_hp, attack, potions)
-    self.name = name 
-    self.max_hp = max_hp 
-    self.hp = max_hp
-    self.attack = attack
-    self.start_potions = potions
-    self.potions = potions 
-    self.alive = True 
-    self.image = pygame.image.load() #Load image of Warrior
-    self.rect = self.image.get_rect()
-    self.rect.center = (x, y)
+    def __init__(self, x, y, name, max_hp, attack, potions):
+        self.name = name 
+        self.max_hp = max_hp 
+        self.hp = max_hp
+        self.attack = attack
+        self.start_potions = potions
+        self.potions = potions 
+        self.alive = True 
+        self.image = pygame.image.load() #Load image of Warrior
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
     
   
 def draw(self):
@@ -55,7 +65,7 @@ def main():
     run = True 
     while run:
         fpslock()
-        drawbg()
+        loadimages()
         
         #draw Warrior
         knight.draw()
