@@ -1,4 +1,3 @@
-
 import pygame 
 import random 
 pygame.init()
@@ -14,33 +13,34 @@ pygame.display.set_caption("Darren's Breakdown ")
 #store images
 #background
 bgimage= pygame.image.load("img/bg.png").convert_alpha()
-sideimage= pygame.image.load("img/side2.png").convert_alpha()
+sideimage= pygame.image.load("img/side1.png").convert_alpha()
 
 #Units
 
-#playertankimg = pygame.image.load("img/tanker1.png").convert_alpha()
-#playerwarriorimg = pygame.image.load("img/warrior1.png").convert_alpha()
+playertankimg = pygame.image.load("img/tanker1.png").convert_alpha()
+playerwarriorimg = pygame.image.load("img/warrior1.png").convert_alpha()
 
-#enemytankimg = pygame.image.load("img/tanker2.png").convert_alpha()
-#enemywarriorimg = pygame.image.load("img/warrior2.png").convert_alpha()
+enemytankimg = pygame.image.load("img/tanker2.png").convert_alpha()
+enemywarriorimg = pygame.image.load("img/warrior2.png").convert_alpha()
 
 #Load images
 def loadimages():
     screen.blit(bgimage, (300,0))
     screen.blit(sideimage, (0,0))
     screen.blit(sideimage, (1175,0))
+
 #prevent lag on slower computers
 def fpslock():
     FPS = 60 # frames per second setting
     fpsClock = pygame.time.Clock()
     fpsClock.tick(FPS)
-    
+
 #Attack for Warrior
 attack = random.randint(5, 20)
 
 #Warrior class
 class Warrior():
-    def __init__(self, x, y, name, max_hp, attack, potions):
+    def __init__(self, x, y, img, name, max_hp, attack, potions):
         self.name = name 
         self.max_hp = max_hp 
         self.hp = max_hp
@@ -48,15 +48,18 @@ class Warrior():
         self.start_potions = potions
         self.potions = potions 
         self.alive = True 
-        self.image = pygame.image.load() #Load image of Warrior
+        self.image = img 
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
     
   
-def draw(self):
-    screen.blit(self.image, self.rect)
-    
-knight = Warrior(200,260, 'Warrior', 100, attack)
+    def draw(self):
+        screen.blit(self.image, self.rect)
+
+
+
+knight = Warrior(200,260,playertankimg, 0 , 10, 10, 10 )
+
 
 
 #To Keep window up 
