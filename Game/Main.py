@@ -35,44 +35,95 @@ def fpslock():
     fpsClock = pygame.time.Clock()
     fpsClock.tick(FPS)
 
-#Attack for Warrior
-attack = random.randint(5, 20)
-#Defence for Warrior
-defence = random.randint(1, 10)
-
-#Attack for Tanker
-attack2 = random.randint(1, 20)
-#Defence for Tanker 
-defence2 = random.randint(5, 15)
-
-#Warrior class
+# Create Warrior Class with random attackPoint and defensePoint
 class Warrior():
-    def __init__(self, x, y, img, name, max_hp, attack, defence,  potions, exp):
-        self.name = name 
-        self.max_hp = max_hp 
+    def __init__(self, x, y, img, name, max_hp, attack, defence, exp, rank):
+        self.name = name
+        self.max_hp = max_hp
         self.hp = max_hp
-        self.attack = attack
-        self.defence = defence 
-        self.start_potions = potions
-        self.potions = potions 
-        self.alive = True 
+        self.attack = random.randint(5,20)
+        self.defence = random.randint(1,10)
+        self.alive = True
         self.image = img
         self.exp = exp
+        self.rank = rank
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
 
-    
+# Create Tanker Class with random attackPoint and defensePoint
+class Tanker():
+    def __init__(self, x, y, img, name, max_hp, attack, defence, exp, rank):
+        self.name = name
+        self.max_hp = max_hp
+        self.hp = max_hp
+        self.attack = random.randint(1,10)
+        self.defence = random.randint(5,20)
+        self.alive = True
+        self.image = img
+        self.exp = exp
+        self.rank = rank
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)    
   
     def draw(self):
         screen.blit(self.image, self.rect)
        
 
-playerwar = Warrior(400,260,playerwarriorimg, 0,  100, attack, defence, 0, 0 )
-playertank = Warrior(1100, 260, playertankimg, 0, 100, attack, defence,  0, 0 )
-enemywar = Warrior( 0, 0, enemywarriorimg, 0, 100, attack2, defence2, 0, 0) 
-enemytank = Warrior(0, 0, enemytankimg, 0, 100, attack2, defence2, 0, 0)
+#Warrior Unit Generator
+def genWarrior(nameOfUnit):
+    unit = Warrior(400, 260, 0, nameOfUnit, 100, 0, 0, 0, 1 )
+    return unit
+
+#Tanker Unit Generator
+def genTanker(nameOfUnit):
+    unit = Tanker(1100, 260, 0, nameOfUnit, 100, 0, 0, 0, 1 )
+    return unit
+
+#List of Units
+unitList = []
+
+#Loop for Unit Generation
+while (len(unitList) < 3):
+    print('Type W for warrior or T for tanker')
+    typeOfUnit = input('Select your unit type: ').upper()
+
+    if typeOfUnit == 'W':
+        warrior_name = input('Enter Unit name: ')
+        warriorman = genWarrior(warrior_name)
+        unitList.append(warriorman)
+
+    elif typeOfUnit == 'T':
+        tanker_name = input('Enter Unit name: ')
+        tankerman = genTanker(tanker_name)
+        unitList.append(tankerman)
+    
+    else:
+        print ('Don\'t be lame, choose only W or T leh...')
+
+#Unit Generation Preview
+for nameOfUnit in range(len(unitList)):
+    print('\nName: ', unitList[nameOfUnit].name, 'HP: ', unitList[nameOfUnit].hp, 'Attack: ', unitList[nameOfUnit].attack)
+    print('Defence: ', unitList[nameOfUnit].defence, 'EXP: ', unitList[nameOfUnit].exp, 'Rank: ', unitList[nameOfUnit].rank)
+
+#List of AI Units
+aiList = []
+
+while (len(aiList) < 3):
+    aiName = 'AI' + str(random.randint(0,9)) + str(random.randint(0,9))
+    aiGen = random.choice (['W','T'])
+
+    if aiGen == 'W':
+        aiWarrior = genWarrior(aiName)
+        aiList.append(aiWarrior)
+
+    elif aiGen == 'T':
+        aiTanker = genTanker(aiName)
+        aiList.append(aiTanker)
 
 
+for nameOfaiUnit in range (len(aiList)):
+    print('\nName: ', aiList[nameOfaiUnit].name, 'HP: ', aiList[nameOfaiUnit].hp, 'Attack: ', aiList[nameOfaiUnit].attack)
+    print('Defence: ', aiList[nameOfaiUnit].defence, 'EXP: ', aiList[nameOfaiUnit].exp, 'Rank: ', aiList[nameOfaiUnit].rank)
 
 
 #To Keep window up 
