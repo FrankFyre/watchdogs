@@ -10,6 +10,23 @@ screenheight = 500
 screen = pygame.display.set_mode((screenwidth, screenheight))
 pygame.display.set_caption("Darren's Breakdown ")
 
+#define fonts - ALLEN
+font = pygame.font.SysFont('Times New Roman', 26)
+
+# define colors - ALLEN
+red = (255, 0, 0)
+green = (0, 255, 0)
+
+#create function for drawing text - ALLEN
+def draw_text(text, font, text_col, x, y):
+    img = font.render(text, True, text_col)
+    screen.blit(img, (x, y))
+
+#function for drawing panels - ALLEN
+def draw_panel():
+    screen.blit(sideimage, (1175,0))
+    screen.blit(sideimage, (0,0))
+    #NEED PROPER UNIT LIST IN ORDER TO REPRESENT EACH UNIT'S NAME AND HEALTH
 #store images
 #background
 bgimage= pygame.image.load("img/bg.png").convert_alpha()
