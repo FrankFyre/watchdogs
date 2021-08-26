@@ -10,6 +10,15 @@ screenheight = 500
 screen = pygame.display.set_mode((screenwidth, screenheight))
 pygame.display.set_caption("Darren's Breakdown ")
 
+#define game variables
+    current_warrior = 3
+    total_warriors = 6
+    action_cooldown = 0
+    action_wait_time = 90
+    attack = False
+    potion = False
+    clicked = False
+
 #define fonts - ALLEN
 font = pygame.font.SysFont('Times New Roman', 26)
 
@@ -81,7 +90,39 @@ class Tanker():
         self.rank = rank
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)    
-  
+
+    def update(self):
+        animation_cooldown = 100
+        #update image
+        self.image = self.animation_list[self.action][self.frame_index]
+        #check time since update
+        if pygame.time.get_ticks() - self.update_time > animation_cooldown:
+            self.update_time = pygame.time.get_ticks()
+            self.frame_index += 1
+        #rest if anim runs out of time
+        if self.frame_index >= len(self.animation_list[self.action]):
+            self.frame_index = 0
+
+    def idle(self):
+        #set var to attack animation
+        self.action = 0
+        self.frame_index = 0
+        self.update_time = pygame.time.get_ticks()
+
+    def attack(self, enemy):
+        #deal damage to enemy
+        random = random.randint(5, 20)
+        damage = self.strength + rand
+        enemy.hp -= damage
+        #check if enemy has died
+        if enemy.hp < 1:
+            enemy.hp = 0
+            enemy.alive = False
+        #set var to attack animation
+        self.action = 1
+        self.frame_index = 0
+        self.update_time = pygame.time.get_ticks()        
+        
     def draw(self):
         screen.blit(self.image, self.rect)
        
@@ -156,6 +197,56 @@ def main():
         
         #draw Tanker
         playertank.draw()
+        
+        #player actions//reset action var
+        attack = False
+        potion = False
+        target = None
+        #cursor is visible
+        pygame.mouse.set_visible(True)
+        pos = pygame.mouse.get_pos()
+        for count, enemy in enumerate(enemy_list)
+            if enemy.rect.collidepoint(pos):
+                #click to attack 
+                if clicked == True
+                    attack = True
+                    target = enemy_list[count]
+
+        #player's move 
+        if warrior.alive == True:
+        if current_warrior == 3:
+            action_cooldown += 1
+            if action_cooldown >= action_wait_time:
+                #attack
+                if attack == True and target != None:
+                    warrior.attack(target)
+                    current_warrior += 3
+                    action_cooldown = 0
+
+        #enemy action
+        for count, enemy in enumerate(enemy_list):
+            if current_warrior == 3 + count
+                if enemy.alive  == True:
+                    action_cooldown += 1
+                    if action_cooldown >= action_wait_time:
+                        #attack
+                        enemy.attack(warrior1)
+                        current_warrior += 1
+                        action_cooldown = 0
+                else:
+                    current_warrior += 1
+
+        #warriors make a turn then reset
+        if current_warrior > total_warriors:
+            current_warrior = 3
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+            clicked = True
+        else:
+            clicked = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
