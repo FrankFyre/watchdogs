@@ -2,6 +2,7 @@ import pygame
 import random 
 pygame.init()
 
+# testing
 
 #window
 screenwidth = 1475
