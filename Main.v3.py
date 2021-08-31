@@ -75,10 +75,10 @@ def fpslock():
 
 ### Unit Class
 class MasterUnit():
-    def __init__(self, x, y, img, name, max_hp, attack, defence, exp, rank, typer):
+    def __init__(self, x, y, img, name, max_hp, current_hp,attack, defence, exp, rank, typer, potion):
         self.name = name
         self.max_hp = max_hp
-        self.hp = max_hp
+        self.hp = current_hp
         self.attack = attack
         self.defence = defence
         self.alive = True
@@ -88,7 +88,7 @@ class MasterUnit():
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.type=typer
- 
+        self.potion = potion
 
     def sasageyo(self, targetdef, targethp):
         #deal damage to enemy
@@ -119,11 +119,11 @@ class MasterUnit():
 
 #Unit def from Class
 def genplayerwarrior(x,y,name):
-    unit = MasterUnit(x, y, playerwarriorimg, name, 100, random.randint(5,20), random.randint(1,10), 0, 1 ,("Warrior"))
+    unit = MasterUnit(x, y, playerwarriorimg, name, 100, 100, random.randint(5,20), random.randint(1,10), 0, 1 ,("Warrior"),potion=30)
     return unit
 
 def genplayertanker(x,y,name):
-    unit = MasterUnit(x, y, playertankimg, name, 100, random.randint(1,10), random.randint(5,15), 0, 1,("Tanker") )
+    unit = MasterUnit(x, y, playertankimg, name, 100, 100, random.randint(1,10), random.randint(5,15), 0, 1,("Tanker"),potion=30 )
     return unit
 
 #Creation of Units and storing into lists
@@ -174,11 +174,11 @@ PlayerUnitList.append(Playerunit3)
 
 #def to generate units from class
 def AIGEenWar(x,y,name):
-    unit = MasterUnit(x,y, enemyWarriorimg, name, 100, random.randint(5,20), random.randint(1,10), 0, 1 ,("Warrior"))
+    unit = MasterUnit(x,y, enemyWarriorimg, name, 100, 100, random.randint(5,20), random.randint(1,10), 0, 1 ,("Warrior"),potion=0)
     return unit
 
 def AIGenTank(x,y,name):
-    unit = MasterUnit(x,y, enemyTankerimg, name, 100, random.randint(1,10), random.randint(5,15), 0, 1,("Tanker") )
+    unit = MasterUnit(x,y, enemyTankerimg, name, 100, 100, random.randint(1,10), random.randint(5,15), 0, 1,("Tanker"),potion=0 )
     return unit
 
 #Generate units and store in lists
@@ -206,13 +206,13 @@ def drawunit():
         constant=0 #constant is to seprate diff unit in Y axis
         #Player Units
         for x in PlayerUnitList:
-            DrawText(x.name,x.type, x.attack,x.defence,x.exp, x.rank, x.hp,x.hp, 15,0+constant)
+            DrawText(x.name,x.type, x.attack,x.defence,x.exp, x.rank, x.max_hp,x.hp, 15,0+constant)
             constant=constant+150
         
         constant=0
         #AI Units
         for x in AIList:
-            DrawText(x.name,x.type, x.attack,x.defence,x.exp, x.rank, x.hp,x.hp, 1190,0+constant)
+            DrawText(x.name,x.type, x.attack,x.defence,x.exp, x.rank, x.max_hp,x.hp, 1190,0+constant)
             constant=constant+150
 
 
@@ -254,6 +254,7 @@ PU1 = Button( 200, 50, attackbuttonimage,1)
 PU2 = Button( 200, 200, attackbuttonimage,1)
 PU3 = Button( 200, 350, attackbuttonimage,1)
 
+darren=Button( 200,330, attackbuttonimage,1)
 
 
 AIU1 = Button( 1370, 50, attackbuttonimage,1)
@@ -327,28 +328,7 @@ playerattackingunit=0
 defendingAIdef=0
 defendingAIhp=0
 
-class whichplayerselected():
-    def __init__(self):
-        self.v1=self.selected.x
-        self.v2=self.selected.y
-
-    def selected(self,x,y):
-        if PU1.draw():
-            x=3
-        if PU2.draw():
-            x=3
-        if PU3.draw():
-            x=3
-        if AIU1.draw():
-            y=1
-        if AIU2.draw():
-            y=1
-        if AIU3.draw():
-            y=1
         
-
-def button1_clicked():
-   print("Button 1 clicked")
 
 x=0
 y=0
@@ -358,6 +338,13 @@ selectenemy=1
 battlephase=0
 playerfighting=20
 
+
+def Potions(Po):
+    Po.hp += 30
+    print("DRINK THIS SHIT")
+
+
+
 def unitLVL(P):
     if P.exp >= 100:
         P.rank += 1
@@ -366,17 +353,19 @@ def unitLVL(P):
         P.defence += 3
         P.exp = 0
         P.hp = 100
-    
+
 
 def main():
     run = True
     while run:
         #Allow Main to access global Variables
-        global playerfighting,selectenemy,battlephase,playerselectunit,playerturncounter,masterplayercounter,enemyturncounter,playerattackingunit,defendingAIdef,defendingAIhp, AIList,x,y
+        global playerfighting,selectenemy,battlephase,playerselectunit,playerturncounter,masterplayercounter,enemyturncounter,playerattackingunit,defendingAIdef,defendingAIhp, AIList,x,y, unitpotion
         fpslock()
         loadimages()
         drawunit()
         turnslefttext()
+
+        
         #draw Warrior
         for unit in PlayerUnitList:
             unit.draw()
@@ -387,12 +376,14 @@ def main():
         playeraction=0
         t=0
 
+        A=0
+        enemyphase =0
+        AIfighting = 20
         PU1ATK=fightingphase(0,0,PlayerUnitList,AIList)
 
         unit1slected=False
 
-   
-    
+        
         
       
         while t==0:
@@ -418,50 +409,70 @@ def main():
                         print(x)
                         battlephase+=1
                         playerselectunit+=1
-                        selectenemy=0
+                        selectenemy= 0
                         print(battlephase)
 
                     else:
                         break
                 
                 while selectenemy==0:
-                    if AIU1.draw():
-                        y=0
-                        print(y)
-                        battlephase+=1
-                        selectenemy+=1
-                        print(battlephase)
-                    if AIU2.draw():
-                        y=1
-                        print(y)
-                        battlephase+=1
-                        selectenemy+=1
-                        print(battlephase)
-                    if AIU3.draw():
-                        y=2
-                        print(y)
-                        battlephase+=1
-                        selectenemy+=1
-                        print(battlephase)
-                    else:
-                        break
+                      if AIU1.draw():
+                          y=0
+                          print(y)
+                          battlephase+=1
+                          selectenemy+=1
+                          print(battlephase)
+                      if AIU2.draw():
+                          y=1
+                          print(y)
+                          battlephase+=1
+                          selectenemy+=1
+                          print(battlephase)
+                      if AIU3.draw():
+                          y=2
+                          print(y)
+                          battlephase+=1
+                          selectenemy+=1
+                          print(battlephase)
+                      else:
+                         break
                 
-                while battlephase==2:
+                while battlephase==1:
                     krope= fightingphase(x,y,PlayerUnitList,AIList)
                     krope.battlecalculation()
+
+                    ##AIturn = fightingphase(random.randint(0,2),random.randint(0,2),AIList, PlayerUnitList) ##Darren's bullshit code
+                    ##AIturn.battlecalculation()
                     print("End fighting")
                     battlephase=0    
                     playerselectunit=0
                     playerfighting-=1
-                    
-                   
-
-                        
+    
                 else:
                     break
+        else:
+            break      
+
+    # while A==1:
+    #     if AIfighting >0:
+    #         while enemyphase==1:
+    #             AIturn = fightingphase(random.randint(0,2),random.randint(0,2),AIList, PlayerUnitList)
+    #             AIturn.battlecalculation()
+    #             print("End fighting")
+    #     else:
+    #         break
+
         
-            else:
-                break
+
+        if darren.draw():
+            Potions(Playerunit1)
+            print("HEAL!!! B!TCH")
+        
+       
+
+  
+
+
 
         unitLVL(Playerunit1)
         unitLVL(Playerunit2)
@@ -469,7 +480,7 @@ def main():
         unitLVL(AIUnit1)
         unitLVL(AIUnit2)
         unitLVL(AIUnit3)
-        
+
 
 
 
